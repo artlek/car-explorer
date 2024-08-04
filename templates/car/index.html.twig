@@ -1,0 +1,222 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Car Explorer{% endblock %}
+
+{% block main %}
+
+<h1>Find your car</h1>
+<div class="form">
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.brand)}}
+                    {{ form_widget(form.brand) }}
+                    {{ form_errors(form.brand) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.model)}}
+                    {{ form_widget(form.model) }}
+                    {{ form_errors(form.model) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.fuelType)}}
+                    {{ form_widget(form.fuelType) }}
+                    {{ form_errors(form.fuelType) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.gearboxType)}}
+                    {{ form_widget(form.gearboxType) }}
+                    {{ form_errors(form.gearboxType) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.bodyType)}}
+                    {{ form_widget(form.bodyType) }}
+                    {{ form_errors(form.bodyType) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.yearMin)}}
+                    {{ form_widget(form.yearMin) }}
+                    {{ form_errors(form.yearMin) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.yearMax)}}
+                    {{ form_widget(form.yearMax) }}
+                    {{ form_errors(form.yearMax) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.mileageMin)}}
+                    {{ form_widget(form.mileageMin) }}
+                    {{ form_errors(form.mileageMin) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.mileageMax)}}
+                    {{ form_widget(form.mileageMax) }}
+                    {{ form_errors(form.mileageMax) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.priceMin)}}
+                    {{ form_widget(form.priceMin) }}
+                    {{ form_errors(form.priceMin) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="content">
+                    {{ form_label(form.priceMax)}}
+                    {{ form_widget(form.priceMax) }}
+                    {{ form_errors(form.priceMax) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-element">
+                <div class="content">
+                    {{ form_widget(form.search) }}
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+</div>
+<div class="results">
+    <div class="row">
+        {% if cars is defined %}
+            {% for car in cars %}
+                <div class="col-md-6 mb-3 mb-sm-0">
+                    <div class="card rounded-0 mb-3">
+                        <h5 class="card-header">
+                        <div class="card-header-left-column">{{ car.brand.name }} {{ car.model }}</div>
+                            <div class="card-header-right-column">
+                                {% if car.availability == true %}
+                                    <span class="text-success">car available</span>
+                                {% else %}
+                                    <span class="text-danger">car not available</span>
+                                {% endif %}
+                            </div>
+                        </h5>
+                        <div class="card-body">
+                            <div class="card-row">
+                                <div class="card-left-column">Body type</div>
+                                <div class="card-right-column">{{ car.bodyType.name }}</div>
+                            </div>
+                            <div class="card-row">
+                                <div class="card-left-column">gearbox type</div>
+                                <div class="card-right-column">{{ car.gearboxType.name }}</div>
+                            </div>
+                            <div class="card-row">
+                                <div class="card-left-column">Fuel type</div>
+                                <div class="card-right-column">{{ car.fuelType.name }}</div>
+                            </div>
+                            <div class="card-row">
+                                <div class="card-left-column">Year</div>
+                                <div class="card-right-column">{{ car.year }}</div>
+                            </div>
+                            <div class="card-row">
+                                <div class="card-left-column">{{ car.mileage}}</div>
+                                <div class="card-right-column">124560</div>
+                            </div>
+                            <div class="card-row">
+                                <div class="card-left-column">Price</div>
+                                <div class="card-right-column">{{ car.price }}</div>
+                            </div>
+                            <button type="button" class="btn btn-secondary rounded-0 px-4 my-3 btn-sm" data-bs-toggle="modal" data-bs-target="#car-{{ car.id }}">Details</button>
+                            <div class="modal fade" id="car-{{ car.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content rounded-0">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ car.brand.name }} {{ car.model }}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card-row">
+                                                <div class="card-left-column">Car id</div>
+                                                <div class="card-right-column">{{ car.id }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Brand</div>
+                                                <div class="card-right-column">{{ car.brand.name }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Model</div>
+                                                <div class="card-right-column">{{ car.model }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Body type</div>
+                                                <div class="card-right-column">{{ car.bodyType.name }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">gearbox type</div>
+                                                <div class="card-right-column">{{ car.gearboxType.name }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Fuel type</div>
+                                                <div class="card-right-column">{{ car.fuelType.name }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Year</div>
+                                                <div class="card-right-column">{{ car.year }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Mileage</div>
+                                                <div class="card-right-column">{{ car.mileage}}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Price</div>
+                                                <div class="card-right-column">{{ car.price }}</div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Availability</div>
+                                                <div class="card-right-column">
+                                                    {% if car.availability == true %}
+                                                        <span class="text-success">car available</span>
+                                                    {% else %}
+                                                        <span class="text-danger">car not available</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="card-row">
+                                                <div class="card-left-column">Other information</div>
+                                                <div class="card-right-column">for example: VIN number, car history, describle or photos</div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary rounded-0 px-4 btn-sm" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
